@@ -1,14 +1,14 @@
 #ifndef _SIMON_HPP
 #define _SIMON_HPP
 
-#include "Arduino.h"
-
-#include "Array.hpp"
+#include "Array.h"
 #include <Basic_Input.h>
+#include "Interfaces/button.h"
+#include "Interfaces/led.h"
 
 class Input{
     int pin_num;
-    static Array<10> pins;
+    static Array<int, 10> pins;
 
 public:
     Input(){
@@ -36,8 +36,8 @@ public:
 
 class Output{
     int device_num;
-    static Array<10> devices_digital;
-    static Array<10> devices_analog;
+    static Array<int, 10> devices_digital;
+    static Array<int, 10> devices_analog;
 
 public:
     Output(){
@@ -57,22 +57,22 @@ public:
 
     void write_digital(uint8_t pattern){
         int val = 0;
-        for(int i = 0; i < devices_digital.last(); i++){
+        for(int pin : devices_digital){
             val = pattern & 0x01;
-            digitalWrite(devices_digital[i], val);
+            digitalWrite(pin, val);
             pattern >> 1;
         }
     }
 
     void write_pwm(uint8_t brightness){
-        for(int i = 0; i < devices_analog.size(); i++){
-            analogWrite(devices_analog[i], constrain(brightness, 0, 255));
+        for(int pin : devices_analog){
+            analogWrite(pin, constrain(brightness, 0, 255));
         }
     }
 };
 
-Array<10> Input::pins;
-Array<10> Output::devices_digital;
-Array<10> Output::devices_analog;
+Array<int, 10> Input::pins;
+Array<int, 10> Output::devices_digital;
+Array<int, 10> Output::devices_analog;
 
 #endif
