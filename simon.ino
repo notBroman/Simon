@@ -2,6 +2,9 @@
 
 #include <Beginner_LED.h>
 
+#include "Interfaces/button.h"
+#include "Interfaces/led.h"
+
 Input in;
 Output out;
 
@@ -14,14 +17,10 @@ void setup(){
 
 void loop(){
     // do stuff
-  if((in.read_inputs() & 0x01) == 0){
-    out.write_digital(0xFF);
-  }
-  else if ((in.read_inputs() & 0x01) == 1){
-    out.write_digital(0x00);
-  }
 
-  Serial.println(in.read_inputs() & 0x01);
+  out.write_digital(0xFF);
+  delay(500);
+  out.write_digital(0x00);
 
   delay(250);
 }
