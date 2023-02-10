@@ -1,13 +1,13 @@
 #ifndef _ARRAY_H
 #define _ARRAY_H
 
-template<uint8_t N=10>
+template<typedef T, uint8_t N=10>
 class Array{
-  int* data;
+  T* data;
   int last_added = 0;
 public:
-  Array<N>(){
-    data = new (int[N]);
+  Array<T,N>(){
+    data = new (T[N]);
   }
 
   int size(){
@@ -27,7 +27,7 @@ public:
     return last_added;
   }
 
-  int operator[] (uint8_t idx){
+  T& operator[] (uint8_t idx){
     return *(data + idx * sizeof(int));
   }
 
