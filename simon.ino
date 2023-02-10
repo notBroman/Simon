@@ -1,5 +1,7 @@
 #include "Simon.hpp"
 
+#include <Beginner_LED.h>
+
 Input in;
 Output out;
 
@@ -12,10 +14,14 @@ void setup(){
 
 void loop(){
     // do stuff
-  out.write_digital(0xFF);
+  if((in.read_inputs() & 0x01) == 0){
+    out.write_digital(0xFF);
+  }
+  else if ((in.read_inputs() & 0x01) == 1){
+    out.write_digital(0x00);
+  }
+
+  Serial.println(in.read_inputs() & 0x01);
+
   delay(250);
-  out.write_digital(0x00);
-  delay(250);
-  
-  
 }
