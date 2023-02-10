@@ -14,17 +14,24 @@ public:
     return N;
   }
 
-  bool push_back(int num){
+  bool push_back(int& num){
     if(last_added < this->size()){
-      data[last_added++] = num;
+      data[last_added] = num;
+      last_added++;
       return true;
     }
     return false;
   }
 
-  int operator[] (uint8_t idx){
-    data += idx * sizeof(int);
+  int last(){
+    return last_added;
   }
+
+  int operator[] (uint8_t idx){
+    return *(data + idx * sizeof(int));
+  }
+
+  
 };
 
 #endif
