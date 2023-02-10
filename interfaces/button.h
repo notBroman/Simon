@@ -7,13 +7,19 @@ class Button : IOutput{
   uint8_t pin;
   uint8_t value;
 
-  bool updated = false;
-  uint8_t last_read = 0;
+  bool updated;
+  uint8_t last_read;
   uint8_t delta = 100;
 public:
-  Button();
+  Button(uint8_t p) : pin(p){
+    value = 0;
+    updated = false;
+    last_read = 0;
+  }
 
-  bool read();
+  virtual bool read(){
+    
+  }
 };
 
 #endif
