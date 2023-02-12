@@ -5,6 +5,7 @@
 #include "interfaces/led.h"
 
 #include "Array.h"
+#include "interfaces/out_interface.h"
 
 class Controller{
   // i wish i had std::shared_pointer<> T_T
@@ -29,8 +30,7 @@ public:
   };
 
   void test_out(){
-    for(int i = 0; i < m_outs.size(); i++){
-      IOutput* out = m_outs[i];
+    for(IOutput* out : m_outs){
       out->write((uint8_t)255);
       delay(250);
       out->write((uint8_t)0);
@@ -40,8 +40,6 @@ public:
 
   void test_in(){
     for(IInput* in : m_ins){ // does not work T_T, iterator broken ?
-    //for(int i = 0; i < m_ins.size(); i++){
-      //IInput* in = m_ins[i];
       /*
       while(true){
         // do nothing
@@ -50,7 +48,6 @@ public:
         if(((Button*)in)->get_value() != 0);
       }
       */
-      Serial.println("here!");
     }
     
   }
