@@ -11,6 +11,7 @@ void setup(){
 
 void loop(){
   Serial.println("loop");
+  delay(1000);
     // do stuff
     //c1.play();
 }
