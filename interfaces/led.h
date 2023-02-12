@@ -3,7 +3,7 @@
 
 #include "out_interface.h"
 
-class Led : IOutput{
+class Led : public IOutput{
   uint8_t pin;
   uint8_t value = 0;
   bool digital = true;

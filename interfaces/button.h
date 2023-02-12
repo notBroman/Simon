@@ -3,7 +3,7 @@
 
 #include "in_interface.h"
 
-class Button : IInput{
+class Button : public IInput{
   uint8_t pin;
   uint8_t value;
 
@@ -26,6 +26,18 @@ public:
     }
     return false;
     
+  }
+
+  Button* operator* (){
+    return this;
+  }
+
+  uint8_t get_value(){
+    return value;
+  }
+
+  void set_updated(bool state){
+    updated = state;
   }
 
 };
