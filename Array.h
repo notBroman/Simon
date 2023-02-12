@@ -59,7 +59,7 @@ public:
   }
 
   bool operator!= (const ArrayIterator& rhs) const {
-    return !(*this == rhs);
+    return !(m_ptr == rhs.m_ptr);
   }
 
 private:
@@ -87,7 +87,7 @@ public:
     return N;
   }
 
-  bool push_back(int& num){
+  bool push_back(T num){
     if(last_added < this->size()){
       data[last_added] = num;
       last_added++;
@@ -117,7 +117,7 @@ public:
   }
 
   Iterator end(){
-    return Iterator(data + this->size() * sizeof(T));
+    return Iterator(&data[size()]);
   }
 
 };
