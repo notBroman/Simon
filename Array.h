@@ -1,6 +1,16 @@
 #ifndef _ARRAY_H
 #define _ARRAY_H
 
+/*
+* This implementation is heavily inspired by the C++ STL
+* I just really wanted range based for loops
+*
+* In Controller Class:
+* This will be used for arrays of type IInput and IOutput
+* from which all the input and ouput devices must inherit
+* -> the interfaces mandate functions for the devices
+*/
+
 template<typename Array>
 class ArrayIterator{
 public:
@@ -63,7 +73,7 @@ class Array{
   int last_added = 0;
 public:
   using ValueType = T;
-  using Iterator = ArrayIterator<Array<T,N>>I;
+  using Iterator = ArrayIterator<Array<T,N>>;
 public:
   Array<T,N>(){
     data = new (T[N]);
