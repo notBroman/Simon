@@ -1,9 +1,9 @@
 #ifndef _BUTTON_H
 #define _BUTTON_H
 
-#include "out_interface.h"
+#include "in_interface.h"
 
-class Button : IOutput{
+class Button : IInput{
   uint8_t pin;
   uint8_t value;
 
@@ -18,8 +18,17 @@ public:
   }
 
   virtual bool read(){
+    if (millis() > (last_read + delta) && !updated){
+      value = digitalRead(pin);
+      last_read = millis();
+      updated = true;
+
+    }
+    return false;
     
   }
+
 };
+
 
 #endif
