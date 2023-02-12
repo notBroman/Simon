@@ -88,7 +88,7 @@ public:
   }
 
   bool push_back(T num){
-    if(last_added < this->size()){
+    if(last_added + 1 < this->size()){
       data[last_added] = num;
       last_added++;
       return true;
@@ -113,11 +113,11 @@ public:
   }
   
   Iterator begin(){
-    return data;
+    return Iterator(data);
   }
 
   Iterator end(){
-    return Iterator(&data[size()]);
+    return Iterator(&(data[this->last()]));
   }
 
 };

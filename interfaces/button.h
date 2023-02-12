@@ -12,14 +12,14 @@ class Button : public IInput{
   uint8_t delta = 100;
 public:
   Button(uint8_t p) : pin(p){
-    value = 0;
+    value = 1; // because active low
     updated = false;
     last_read = 0;
   }
 
   virtual bool read(){
-    if (millis() > (last_read + delta) && !updated){
-      value = digitalRead(pin);
+    if (millis() > (last_read + delta)){
+      value = digitalRead((int)pin);
       last_read = millis();
       updated = true;
 

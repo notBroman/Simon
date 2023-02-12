@@ -5,13 +5,12 @@
 #include "interfaces/led.h"
 
 #include "Array.h"
-#include "interfaces/out_interface.h"
 
 class Controller{
   // i wish i had std::shared_pointer<> T_T
   // references or pointers that is the question
   Array<IInput*, 3> m_ins;
-  Array<IOutput*, 2> m_outs;
+  Array<IOutput*, 10> m_outs;
 
   uint8_t round;
   uint8_t score_player;
@@ -31,23 +30,31 @@ public:
 
   void test_out(){
     for(IOutput* out : m_outs){
-      out->write((uint8_t)255);
-      delay(250);
-      out->write((uint8_t)0);
+    //for(int i = 0; i < m_outs.size(); i++){
+      //IOutput* out = m_outs[i];      
+      out->write(255);
+      delay(500);
+      out->write(0);
     }
 
   }
 
   void test_in(){
+    //for(int i = 0; i < m_ins.last(); i++){
+      //IInput* in = m_ins[i];
     for(IInput* in : m_ins){ // does not work T_T, iterator broken ?
-      /*
-      while(true){
+      bool next = false;
+      while(!next){
         // do nothing
         // every button has to be pressed in order to check if connected correctly
-        ((Button*)in)->read();
-        if(((Button*)in)->get_value() != 0);
+        in->read();
+        if(((Button*)in)->get_value() == 0){
+          Serial.println("read");
+          next = true;
+        }
+        Serial.println((((Button*)in)->get_value()));
+        delay(250);
       }
-      */
     }
     
   }
@@ -71,6 +78,7 @@ public:
 
     Led l3((uint8_t)6, false);
     m_outs.push_back(*l3);
+
     /* test if the outputs are set correctly */
     test_out();
 
@@ -85,6 +93,7 @@ public:
     m_ins.push_back(*b3);
 */
     /* test the inputs */
+    Serial.println("why?");
     test_in();
   };
 

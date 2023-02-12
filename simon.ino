@@ -1,5 +1,3 @@
-#include <Beginner_LED.h>
-
 #include "Controller.h"
 
 Controller c1;
@@ -12,7 +10,7 @@ void setup(){
 }
 
 void loop(){
-  //Serial.println("1");
+  Serial.println("loop");
     // do stuff
     //c1.play();
 }

@@ -4,6 +4,7 @@
 class IInput{
 public:
   virtual bool read() = 0;
+  // virtual bool set_updated() = 0;
 };
 
 #endif
