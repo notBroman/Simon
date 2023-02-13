@@ -40,7 +40,9 @@ public:
     test();
   }
 
-  void read_all();
+  void read_sequence(){
+    // do nothing for now
+  }
 };
 
 #endif
