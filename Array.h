@@ -100,6 +100,10 @@ public:
     return last_added;
   }
 
+  void clear(){
+    last_added = 0;
+  }
+
   T& operator[] (const uint8_t idx) const {
     return *(data + idx * sizeof(T));
   }
