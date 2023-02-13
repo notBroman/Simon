@@ -1,10 +1,13 @@
-#ifndef _INPUTHANDLER_H
-#define _INPUTHANDLER_H
+#ifndef _OUTPUTHANDLER_H
+#define _OUTPUTHANDLER_H
 
 #include "Array.h"
 #include "interfaces/led.h"
 
+// template<size_t S>
 class OutputHandler{
+  Array<int, 6> available_pins = {3, 5, 6, 9, 10, 11}
+  //Array<IOutput*, S> m_outs;
   Array<IOutput*, 10> m_outs;
 public:
   OutputHandler(){
@@ -14,11 +17,9 @@ public:
 
   void test(){
     for(IOutput* out : m_outs){
-    //for(int i = 0; i < m_outs.size(); i++){
-    //IOutput* out = m_outs[i];      
-    out->write(255);
-    delay(500);
-    out->write(0);
+      out->write(255);
+      delay(500);
+      out->write(0);
     }
   }
 
@@ -37,7 +38,19 @@ public:
     test();
   }
 
-  void read_all();
+  void run_sequence(Array<int, 10> sequence){
+    for(int entry : sequence){
+      if(entry > 0 && entry < m_outs.last()){
+        m_outs[entry]->write((uint8_t)255);
+        delay(100);
+        m_outs[entry]->write((uint8_t)0);
+      }
+    }
+  }
+
+  int num_devices(){
+    return m_outs.last();
+  }
 };
 
 #endif
