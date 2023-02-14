@@ -17,7 +17,7 @@ class Controller{
   uint8_t score_computer;
 
   Array<int, 10> sequence;
-  int difficulty = 5;
+  int m_difficulty = 5;
 
 public:
   Controller(){
@@ -41,10 +41,10 @@ public:
     sequence.clear();
     // fill with random numbers from 0 to num output devices
     // rand num % h_out.num_devices()
-    for(int i = 0; i < difficulty; i++){
-      long double rand = millis()*millis();
-      rand = rand & h_out.num_device();
-      sequence.push_back((int)rand);
+    for(int i = 0; i < m_difficulty; i++){
+      int rand = random(0, h_out.num_devices());
+      sequence.push_back(rand);
+      Serial.println(sequence.last());
     }
   }
 

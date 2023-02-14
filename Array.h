@@ -105,7 +105,7 @@ public:
   }
 
   T& operator[] (const uint8_t idx) const {
-    return *(data + idx * sizeof(T));
+    return *(data + (idx * sizeof(T)));
   }
   
   bool operator== (const Array& rhs) const {

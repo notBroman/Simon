@@ -6,7 +6,7 @@
 
 // template<size_t S>
 class OutputHandler{
-  Array<int, 6> available_pins = {3, 5, 6, 9, 10, 11}
+  //Array<int, 6> available_pins = {3, 5, 6, 9, 10, 11};
   //Array<IOutput*, S> m_outs;
   Array<IOutput*, 10> m_outs;
 public:
@@ -39,12 +39,14 @@ public:
   }
 
   void run_sequence(Array<int, 10> sequence){
+    Serial.print("run seq, leds: ");
+    Serial.println(m_outs.last());
     for(int entry : sequence){
-      if(entry > 0 && entry < m_outs.last()){
-        m_outs[entry]->write((uint8_t)255);
-        delay(100);
-        m_outs[entry]->write((uint8_t)0);
-      }
+      Serial.println(entry);
+      m_outs[1]->write((uint8_t)255) ? Serial.println("t") : Serial.println("f");
+      delay(250);
+      m_outs[1]->write((uint8_t)0) ? Serial.println("t") : Serial.println("f");
+      delay(250);
     }
   }
 

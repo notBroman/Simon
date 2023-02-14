@@ -10,8 +10,9 @@ void setup(){
 }
 
 void loop(){
+
+  // do stuff
+  c1.play();
   Serial.println("loop");
-  delay(1000);
-    // do stuff
-    //c1.play();
+  delay(30000);
 }

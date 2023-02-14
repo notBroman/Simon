@@ -4,7 +4,7 @@
 class IInput{
 public:
   virtual bool read() = 0;
-  virtual bool get_value() = 0;
+  virtual uint8_t get_value() = 0;
 };
 
 #endif
