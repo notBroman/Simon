@@ -14,5 +14,5 @@ void loop(){
   // do stuff
   c1.play();
   Serial.println("loop");
-  delay(30000);
+  delay(10000);
 }

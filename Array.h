@@ -76,7 +76,7 @@ public:
   using Iterator = ArrayIterator<Array<T,N>>;
 public:
   Array<T,N>(){
-    data = new (T[N]);
+    data = new T[N];
   }
   ~Array(){
     delete data;
@@ -104,8 +104,12 @@ public:
     last_added = 0;
   }
 
-  T& operator[] (const uint8_t idx) const {
-    return *(data + (idx * sizeof(T)));
+  T& operator[] (int idx) {
+    return data[idx];
+  }
+
+  T& get(int idx){
+    return (data[idx]);
   }
   
   bool operator== (const Array& rhs) const {

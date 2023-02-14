@@ -14,7 +14,7 @@ public:
     Serial.begin(9600);
   }
 
-  virtual bool write(uint8_t out){
+  bool write(uint8_t out){
     if(digital){
       digitalWrite(pin, out);
       value = out;
@@ -24,9 +24,7 @@ public:
       analogWrite(pin, out);
       value = out;
       return true;
-      Serial.println("write to led");
     }
-    Serial.println("pin: " pin);
     return false;
   }
 

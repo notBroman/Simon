@@ -16,7 +16,7 @@ class Controller{
   uint8_t score_player;
   uint8_t score_computer;
 
-  Array<int, 10> sequence;
+  int sequence[10];
   int m_difficulty = 5;
 
 public:
@@ -38,13 +38,11 @@ public:
   };
 
   void generate_seq(){
-    sequence.clear();
     // fill with random numbers from 0 to num output devices
     // rand num % h_out.num_devices()
     for(int i = 0; i < m_difficulty; i++){
       int rand = random(0, h_out.num_devices());
-      sequence.push_back(rand);
-      Serial.println(sequence.last());
+      sequence[i] = rand;
     }
   }
 
@@ -53,7 +51,7 @@ public:
       h_in.read_sequence();
     }
     control();
-    h_out.run_sequence(sequence);
+    h_out.run_sequence(sequence, m_difficulty);
   }
 
 };
