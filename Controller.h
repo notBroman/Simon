@@ -5,6 +5,7 @@
 #include "OutputHandler.h"
 
 #include "Array.h"
+#include <avr/sleep.h>
 
 class Controller{
   // i wish i had std::shared_pointer<> T_T
@@ -17,16 +18,35 @@ class Controller{
   uint8_t score_computer;
 
   int sequence[10];
+  int read_sequence[10];
   int m_difficulty = 5;
 
 public:
   Controller(){
     Serial.begin(9600);
+    round = 1;
+    score_player = 0;
+    score_computer = 0;
+    generate_seq();
   };
 
   void control(){
+    // read sequence
+    h_in.read_sequence(read_sequence, m_difficulty);
 
     // check if the sequence read matched the generated sequence
+    for(int i = 0; i < m_difficulty; i++){
+      if(sequence[i] != read_sequence[i]){
+        score_computer++;
+        // decrease difficulty
+        break;
+      }
+      if(i+1 == m_difficulty){
+        score_player++; 
+        //increase difficulty
+      }
+    }
+
 
     // generate the output sequence
     generate_seq();
@@ -47,11 +67,16 @@ public:
   }
 
   void play(){
-    if(round != 0){
-      h_in.read_sequence();
+    if(score_player < 3 && score_computer <3){ 
+      h_out.run_sequence(sequence, m_difficulty);  
+      control();
+      round++;
+    } else{
+      (score_player > 2) ? Serial.println("Player wins") : Serial.println("Computer wins");
+      while(true){
+        // do nothing
+      }      
     }
-    control();
-    h_out.run_sequence(sequence, m_difficulty);
   }
 
 };
