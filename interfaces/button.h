@@ -6,22 +6,26 @@
 class Button : public IInput{
   uint8_t pin;
   uint8_t value;
+  uint8_t active_val;
 
   bool updated;
   uint8_t last_read;
-  uint8_t delta = 100;
+  uint8_t delta = 250;
 public:
   Button(uint8_t p) : pin(p){
     value = 1; // because active low
+    active_val = 0;
     updated = false;
     last_read = 0;
   }
 
   virtual bool read(){
     if (millis() > (last_read + delta)){
-      value = digitalRead((int)pin);
+      int tmp = digitalRead((int)pin);
       last_read = millis();
-      updated = true;
+      value = (tmp == active_val) ? tmp : value;
+      updated = (value == active_val) ? true : false;
+      return updated;
 
     }
     return false;
@@ -33,7 +37,9 @@ public:
   }
 
   uint8_t get_value(){
-    return value;
+    uint8_t old = value;
+    value = 1;
+    return old;
   }
 
   void set_updated(bool state){
