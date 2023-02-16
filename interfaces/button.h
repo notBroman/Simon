@@ -42,6 +42,10 @@ public:
     return old;
   }
 
+  void reset(){
+    value = 1;
+  }
+
   int get_pin(){
     get_value();
     return (int)pin;

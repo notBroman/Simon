@@ -12,7 +12,7 @@ public:
   InputHandler(){
     // initialize the serial line for debugging
     Serial.begin(9600);
-    input_time = 30*1000;
+    input_time = 30*1000; // 30s time to respond to simon
 
     // register the input devices
     m_ins.push_back( new Button((uint8_t)2));
@@ -52,7 +52,7 @@ public:
       for(IInput* in : m_ins){
         read = in->read();
         if(read){
-          in->get_value();
+          in->reset();
           read_seq[que] = pos;
           que++;
           read = false;

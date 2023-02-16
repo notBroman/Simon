@@ -11,6 +11,8 @@ class OutputHandler{
   //Array<IOutput*, 10> m_outs;
   IOutput* m_outs[10];
   int out_num = 3;
+  
+
 public:
   OutputHandler(){
     /* configure the outputs */

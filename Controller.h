@@ -21,6 +21,10 @@ class Controller{
   int read_sequence[10];
   int m_difficulty = 5;
 
+  enum { READ=0, CONTROL, WRITE, END };
+  int current_state = WRITE;
+
+
 public:
   Controller(){
     Serial.begin(9600);
@@ -68,7 +72,28 @@ public:
   }
 
   void play(){
-    if(score_player < 3 && score_computer <3){ 
+    switch(current_state){
+      case WRITE:
+        break;
+
+      case CONTROL:
+        break;
+
+      case READ:
+        break;
+      
+      case END:
+        (score_player > 2) ? h_out.win() : h_out.loss();
+        while(true){
+          // do nothing
+        }   
+        break;
+
+
+    }
+    /*
+    if(score_player < 3 && score_computer <3){
+
       h_out.run_sequence(sequence, m_difficulty);  
       control();
       round++;
@@ -85,6 +110,7 @@ public:
         
       }      
     }
+    */
   }
 
 };

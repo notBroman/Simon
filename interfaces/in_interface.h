@@ -6,6 +6,7 @@ public:
   virtual bool read() = 0;
   virtual uint8_t get_value() = 0;
   virtual int get_pin() = 0;
+  virtual void reset() = 0;
 };
 
 #endif
