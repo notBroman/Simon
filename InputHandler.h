@@ -32,7 +32,6 @@ public:
           next = true;
         }
         //Serial.println((in->get_value()));
-        delay(250);
       }
     }
   }
@@ -42,27 +41,34 @@ public:
     test();
   }
 
-  void read_sequence(int* read_seqi, int difficulty){
+  void read_sequence(int* read_seq, int difficulty){
     long double timer = millis();
-    int i = 0;
+    int que = 0;
     bool read;
 
     Serial.println("entered");
 
-    while(millis() <= timer + input_time && i < difficulty){
+    while(millis() <= timer + input_time && que < difficulty){
       // do the reading in the permitted window
+      int pos = 0;
       for(IInput* in : m_ins){
         read = in->read();
         if(read){
           in->get_value();
-          i++;
+          read_seq[que] = pos;
+          que++;
           read = false;
           break;
         }
+        pos++;
       }
-      Serial.println(i);
     }
     // do nothing for now
+    for(int i = 0; i < difficulty; i++){
+      Serial.print(read_seq[i] );
+      Serial.print(", ");
+    }
+    Serial.println();
   }
 };
 

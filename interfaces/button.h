@@ -9,8 +9,8 @@ class Button : public IInput{
   uint8_t active_val;
 
   bool updated;
-  uint8_t last_read;
-  uint8_t delta = 250;
+  long double last_read = 0;
+  uint8_t delta = 180;
 public:
   Button(uint8_t p) : pin(p){
     value = 1; // because active low
@@ -40,6 +40,11 @@ public:
     uint8_t old = value;
     value = 1;
     return old;
+  }
+
+  int get_pin(){
+    get_value();
+    return (int)pin;
   }
 
   void set_updated(bool state){

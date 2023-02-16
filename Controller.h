@@ -60,6 +60,7 @@ public:
   void generate_seq(){
     // fill with random numbers from 0 to num output devices
     // rand num % h_out.num_devices()
+    randomSeed(analogRead(A0));
     for(int i = 0; i < m_difficulty; i++){
       int rand = random(0, h_out.num_devices());
       sequence[i] = rand;
@@ -71,10 +72,17 @@ public:
       h_out.run_sequence(sequence, m_difficulty);  
       control();
       round++;
+      Serial.print("P:");
+      Serial.println(score_player);
+      Serial.print("Com:");
+      Serial.println(score_computer);
     } else{
-      (score_player > 2) ? Serial.println("Player wins") : Serial.println("Computer wins");
+      (score_player > 2) ? h_out.win() : h_out.loss();
+      //h_out.loss();
+      //h_out.win();
       while(true){
         // do nothing
+        
       }      
     }
   }

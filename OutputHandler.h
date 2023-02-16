@@ -24,9 +24,7 @@ public:
   }
 
   void test(){
-    int i = 0;
     for(int i = 0; i < num_devices(); ++i){
-      Serial.print(i);
       IOutput* out = m_outs[i];
       out->write(255);
       delay(500);
@@ -54,6 +52,25 @@ public:
   int num_devices(){
     //return m_outs.last();
     return out_num;
+  }
+
+  bool loss(){
+    for(int i = 0; i < num_devices(); ++i){
+      IOutput* out = m_outs[i];
+      out->write(255);
+    }
+    return false;
+  }
+
+  bool win(){
+    for(int i = 0; i < num_devices(); ++i){
+      IOutput* out = m_outs[i];
+      out->write(255);
+      delay(500);
+      out->write(0);
+
+    }
+    return true;
   }
 };
 
