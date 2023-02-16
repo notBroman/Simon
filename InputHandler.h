@@ -46,8 +46,6 @@ public:
     int que = 0;
     bool read;
 
-    Serial.println("entered");
-
     while(millis() <= timer + input_time && que < difficulty){
       // do the reading in the permitted window
       int pos = 0;
@@ -63,12 +61,6 @@ public:
         pos++;
       }
     }
-    // do nothing for now
-    for(int i = 0; i < difficulty; i++){
-      Serial.print(read_seq[i] );
-      Serial.print(", ");
-    }
-    Serial.println();
   }
 };
 
