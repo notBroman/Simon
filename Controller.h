@@ -36,7 +36,17 @@ public:
 
   void control(){
     // read sequence
-    h_in.read_sequence(read_sequence, m_difficulty);
+    int que = 0;
+    long double start_time = millis();
+    int timeout = 0;
+    while(que < m_difficulty && timeout == 0){
+      timeout = h_in.read_que(read_sequence, que, start_time);
+      if(timeout == -1){
+        break;
+      }
+      h_out.single_out(read_sequence[que], 50);
+      ++que;    
+    }
 
     // check if the sequence read matched the generated sequence
     int max = m_difficulty;
