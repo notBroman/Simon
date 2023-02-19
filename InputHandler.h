@@ -14,13 +14,10 @@ public:
     Serial.begin(9600);
     input_time = 30*1000; // 30s time to respond to simon
 
-    // register the input devices
-    m_ins.push_back( new Button((uint8_t)2));
-    m_ins.push_back( new Button((uint8_t)4));
-    m_ins.push_back( new Button((uint8_t)7));
   }
 
   void test(){
+    int i = -1;
     for(IInput* in : m_ins){ // does not work T_T, iterator broken ?
       bool next = false;
       while(!next){
@@ -28,7 +25,8 @@ public:
         // every button has to be pressed in order to check if connected correctly
         in->read();
         if(in->get_value() == 0){
-          //Serial.println("read");
+          Serial.print("Botton ");
+          Serial.println(++i);
           next = true;
         }
         //Serial.println((in->get_value()));
@@ -37,6 +35,11 @@ public:
   }
 
   void setup(){
+    /* configure the input devices in order 0 to max */
+    m_ins.push_back( new Button((uint8_t)2));
+    m_ins.push_back( new Button((uint8_t)4));
+    m_ins.push_back( new Button((uint8_t)7));
+
     // add two buttons as input devices
     test();
   }
