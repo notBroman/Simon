@@ -74,9 +74,25 @@ public:
   void play(){
     switch(current_state){
       case WRITE:
+        h_out.run_sequence(sequence, m_difficulty);
+        current_state = CONTROL;
         break;
 
       case CONTROL:
+        control();
+        round++;
+        
+        Serial.print("P:");
+        Serial.println(score_player);
+        Serial.print("Com:");
+        Serial.println(score_computer);
+
+        if(score_player >= 3 || score_computer >= 3){
+          current_state = END;
+          break;
+        } 
+
+        current_state = WRITE;
         break;
 
       case READ:
