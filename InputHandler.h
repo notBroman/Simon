@@ -44,12 +44,9 @@ public:
     test();
   }
 
-  void read_sequence(int* read_seq, int difficulty){
-    long double timer = millis();
-    int que = 0;
+  int read_que(int* read_seq, int que, long double start_time){
     bool read;
-
-    while(millis() <= timer + input_time && que < difficulty){
+    while(millis() <= start_time + input_time){
       // do the reading in the permitted window
       int pos = 0;
       for(IInput* in : m_ins){
@@ -57,14 +54,15 @@ public:
         if(read){
           in->reset();
           read_seq[que] = pos;
-          que++;
           read = false;
-          break;
+          return 0;
         }
         pos++;
       }
     }
+    return -1;
   }
+
 };
 
 #endif
