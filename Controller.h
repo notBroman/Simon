@@ -39,18 +39,20 @@ public:
     h_in.read_sequence(read_sequence, m_difficulty);
 
     // check if the sequence read matched the generated sequence
-    for(int i = 0; i < m_difficulty; i++){
+    int max = m_difficulty;
+    for(int i = 0; i < max; i++){
       if(sequence[i] != read_sequence[i]){
         score_computer++;
-        // decrease difficulty
+        Serial.println(score_computer);
+        m_difficulty--;
         break;
       }
-      if(i+1 == m_difficulty){
-        score_player++; 
-        //increase difficulty
+      if(i + 1 == m_difficulty){
+        Serial.println(score_player);
+        score_player++;
+        m_difficulty++;
       }
     }
-
 
     // generate the output sequence
     generate_seq();
