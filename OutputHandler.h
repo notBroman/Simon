@@ -48,7 +48,13 @@ public:
       out->write(0);
       delay(500);
     }
-    
+  }
+
+  void single_out(int idx, int val){
+    IOutput* device = m_outs[idx];
+    device->write(val);
+    delay(125);
+    device->write(0);
   }
 
   int num_devices(){
