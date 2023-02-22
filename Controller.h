@@ -23,6 +23,9 @@ class Controller{
 
   enum { READ=0, CONTROL, WRITE, END };
   int current_state = WRITE;
+  int que;
+  long int ellapsed_time;
+  bool displayed;
 
 
 public:
@@ -31,22 +34,13 @@ public:
     round = 1;
     score_player = 0;
     score_computer = 0;
+    que = 0;
+    ellapsed_time = 0;
+    displayed = false;
     generate_seq();
   };
 
   void control(){
-    // read sequence
-    int que = 0;
-    long double start_time = millis();
-    int timeout = 0;
-    while(que < m_difficulty && timeout == 0){
-      timeout = h_in.read_que(read_sequence, que, start_time);
-      if(timeout == -1){
-        break;
-      }
-      h_out.single_out(read_sequence[que], 50);
-      ++que;    
-    }
 
     // check if the sequence read matched the generated sequence
     int max = m_difficulty;
@@ -68,6 +62,18 @@ public:
     generate_seq();
   };
 
+  void read(){
+
+    long double start_time = millis();
+    int timeout = 0;
+    timeout = h_in.read_que(read_sequence, que, ellapsed_time);
+    if(timeout != -1){
+      h_out.single_out(read_sequence[que], 50);
+      ++que;
+      ellapsed_time += (millis() - start_time);
+    }
+  }
+
   void setup(){
     h_out.setup();
     h_in.setup();
@@ -87,7 +93,9 @@ public:
     switch(current_state){
       case WRITE:
         h_out.run_sequence(sequence, m_difficulty);
-        current_state = CONTROL;
+        current_state = READ;
+        que = 0;
+        ellapsed_time =0;
         break;
 
       case CONTROL:
@@ -108,13 +116,18 @@ public:
         break;
 
       case READ:
+        // read sequence
+        read();
+        if (que == m_difficulty){ 
+          current_state = CONTROL;
+        }
         break;
       
       case END:
-        (score_player > 2) ? h_out.win() : h_out.loss();
-        while(true){
-          // do nothing
-        }   
+        if (!displayed) {
+          (score_player > 2) ? h_out.win() : h_out.loss();
+        }
+        displayed = true;
         break;
 
 
