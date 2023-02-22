@@ -44,9 +44,9 @@ public:
     test();
   }
 
-  int read_que(int* read_seq, int que, long double time){
-    bool read = false;
-    if(time <= input_time){
+  int read_que(int* read_seq, int que, long double ellapsed_time){
+    bool read;
+    while(ellapsed_time <= input_time){
       // do the reading in the permitted window
       int pos = 0;
       for(IInput* in : m_ins){
@@ -59,6 +59,7 @@ public:
         }
         pos++;
       }
+      return 1;
     }
     return -1;
   }

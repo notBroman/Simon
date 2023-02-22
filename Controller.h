@@ -25,7 +25,6 @@ class Controller{
   int current_state = WRITE;
   int que;
   long int ellapsed_time;
-  bool displayed;
 
 
 public:
@@ -36,7 +35,6 @@ public:
     score_computer = 0;
     que = 0;
     ellapsed_time = 0;
-    displayed = false;
     generate_seq();
   };
 
@@ -67,11 +65,16 @@ public:
     long double start_time = millis();
     int timeout = 0;
     timeout = h_in.read_que(read_sequence, que, ellapsed_time);
-    if(timeout != -1){
+    Serial.println(timeout);
+    if(timeout == 0){
       h_out.single_out(read_sequence[que], 50);
       ++que;
-      ellapsed_time += (millis() - start_time);
+    } else if(timeout == -1){
+      for(int i = 0; i < 10; i++){
+        read_sequence[i] = 0;
+      }
     }
+    ellapsed_time += (millis() - start_time);
   }
 
   void setup(){
@@ -95,7 +98,7 @@ public:
         h_out.run_sequence(sequence, m_difficulty);
         current_state = READ;
         que = 0;
-        ellapsed_time =0;
+        ellapsed_time = 0;
         break;
 
       case CONTROL:
@@ -124,10 +127,7 @@ public:
         break;
       
       case END:
-        if (!displayed) {
-          (score_player > 2) ? h_out.win() : h_out.loss();
-        }
-        displayed = true;
+        (score_player > 2) ? h_out.win() : h_out.loss();
         break;
 
 
