@@ -66,6 +66,12 @@ public:
     for(int i = 0; i < num_devices(); ++i){
       IOutput* out = m_outs[i];
       out->write(255);
+      delay(100);
+    }
+    for(int i = 0; i < num_devices(); ++i){
+      IOutput* out = m_outs[i];
+      out->write(0);
+      delay(100);
     }
     return false;
   }
@@ -74,7 +80,7 @@ public:
     for(int i = 0; i < num_devices(); ++i){
       IOutput* out = m_outs[i];
       out->write(255);
-      delay(500);
+      delay(100);
       out->write(0);
 
     }

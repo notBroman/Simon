@@ -65,7 +65,6 @@ public:
     long double start_time = millis();
     int timeout = 0;
     timeout = h_in.read_que(read_sequence, que, ellapsed_time);
-    Serial.println(timeout);
     if(timeout == 0){
       h_out.single_out(read_sequence[que], 50);
       ++que;
@@ -73,6 +72,7 @@ public:
       for(int i = 0; i < 10; i++){
         read_sequence[i] = 0;
       }
+      que = m_difficulty;
     }
     ellapsed_time += (millis() - start_time);
   }
