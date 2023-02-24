@@ -8,6 +8,7 @@
 class IOutput{
 public:
   virtual bool write(uint8_t val) = 0;
+  virtual int get_pin() = 0;
 };
 
 #endif

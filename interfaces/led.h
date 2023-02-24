@@ -28,6 +28,10 @@ public:
     return false;
   }
 
+  int get_pin(){
+    return pin;
+  }
+
   Led* operator* (){
     return this;
   }
