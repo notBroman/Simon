@@ -53,14 +53,17 @@ public:
     test();
   }
 
-  void run_sequence(int* sequence, int difficulty){
-    for(int i = 0; i < difficulty; ++i){
-      IOutput* out = this->m_outs[(sequence[i])];
+  int run_sequence(int* sequence, int difficulty, int que, long int active_time){
+    Output* out = this->m_outs[(sequence[que])];
+    if(digitalRead(out->get_pin()) == LOW){
       out->write(255);
-      delay(500);
-      out->write(0);
-      delay(500);
+      return 0;
     }
+    else if(digitalRead(out->get_pin()) == HIGH && active_time >= 250){
+      out->write(0);
+      return 1;
+    }
+    return -1;
   }
 
   void single_out(int idx, int val){

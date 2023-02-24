@@ -12,18 +12,19 @@ class Controller{
   InputHandler* h_in;
   OutputHandler* h_out;
 
-  uint8_t round;
-  uint8_t score_player;
-  uint8_t score_computer;
+  uint8_t m_round;
+  uint8_t m_score_player;
+  uint8_t m_score_computer;
 
-  int sequence[10];
-  int read_sequence[10];
+  int m_sequence[10];
+  int m_read_sequence[10];
   int m_difficulty = 5;
 
   enum { READ=0, CONTROL, WRITE, END };
-  int current_state = WRITE;
-  int que;
-  long int ellapsed_time;
+  int m_current_state = WRITE;
+  int m_que;
+  long int m_ellapsed_time;
+  long int m_active_time;
 
 
 public:
@@ -32,8 +33,8 @@ public:
     round = 1;
     score_player = 0;
     score_computer = 0;
-    que = 0;
-    ellapsed_time = 0;
+    m_que = 0;
+    m_ellapsed_time = 0;
     generate_seq();
     
     h_in = new InputHandler(ins, l1);
@@ -45,13 +46,13 @@ public:
     // check if the sequence read matched the generated sequence
     int max = m_difficulty;
     for(int i = 0; i < max; i++){
-      if(sequence[i] != read_sequence[i]){
-        score_computer++;
+      if(m_sequence[i] != m_read_sequence[i]){
+        m_score_computer++;
         m_difficulty--;
         break;
       }
       if(i + 1 == m_difficulty){
-        score_player++;
+        m_score_player++;
         m_difficulty++;
       }
     }
@@ -64,17 +65,17 @@ public:
 
     long double start_time = millis();
     int timeout = 0;
-    timeout = h_in->read_que(read_sequence, que, ellapsed_time);
+    timeout = h_in->read_que(m_read_sequence, m_que, m_ellapsed_time);
     if(timeout == 0){
-      h_out->single_out(read_sequence[que], 50);
-      ++que;
+      h_out->single_out(m_read_sequence[m_que], 50);
+      ++m_que;
     } else if(timeout == -1){
       for(int i = 0; i < 10; i++){
-        read_sequence[i] = 0;
+        m_read_sequence[i] = 0;
       }
-      que = m_difficulty;
+      m_que = m_difficulty;
     }
-    ellapsed_time += (millis() - start_time);
+    m_ellapsed_time += (millis() - start_time);
   }
 
   void setup(){
@@ -88,17 +89,37 @@ public:
     randomSeed(analogRead(A0));
     for(int i = 0; i < m_difficulty; i++){
       int rand = random(0, h_out->num_devices());
-      sequence[i] = rand;
+      m_sequence[i] = rand;
     }
   }
 
   void play(){
-    switch(current_state){
+    switch(m_current_state){
       case WRITE:
-        h_out->run_sequence(sequence, m_difficulty);
-        current_state = READ;
-        que = 0;
-        ellapsed_time = 0;
+        long int start = milis()
+        int done = h_out->run_sequence(m_sequence, m_difficulty, m_que, m_active_time);
+        switch(done){
+        case -1:
+          // the led did not change, because it has not be on long enough
+          m_active_time += (millis() - start);
+          break;
+
+        case 0:
+          // the led has been switched on
+          m_active_time = 0;
+          break;
+
+        case 1:
+          // the led has been switched off
+          m_que++;
+          m_active_time = 0;
+          break; 
+        }
+        if(m_que == m_difficulty){
+          m_current_state = READ;
+          m_que = 0;
+          m_ellapsed_time = 0;
+        }
         break;
 
       case CONTROL:
@@ -111,23 +132,24 @@ public:
         Serial.println(score_computer);
 
         if(score_player >= 3 || score_computer >= 3){
-          current_state = END;
+          m_current_state = END;
           break;
         } 
 
-        current_state = WRITE;
+        m_current_state = WRITE;
         break;
 
       case READ:
         // read sequence
         read();
-        if (que == m_difficulty){ 
-          current_state = CONTROL;
+        if (m_que == m_difficulty){ 
+          m_current_state = CONTROL;
+          m_que = 0;
         }
         break;
       
       case END:
-        (score_player > 2) ? h_out->win() : h_out->loss();
+        (m_score_player > 2) ? h_out->win() : h_out->loss();
         break;
 
 
