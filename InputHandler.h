@@ -9,11 +9,29 @@ class InputHandler{
 
   int input_time;
 public:
-  InputHandler(){
+  InputHandler(int one, int two, int three){
     // initialize the serial line for debugging
-    Serial.begin(9600);
+    //Serial.begin(9600);
     input_time = 30*1000; // 30s time to respond to simon
 
+    /* configure the input devices in order 0 to max */
+    m_ins.push_back( new Button((uint8_t)one));
+    m_ins.push_back( new Button((uint8_t)two));
+    m_ins.push_back( new Button((uint8_t)three));
+  }
+
+  InputHandler(int* ins, int len){
+    // initialize the serial line for debugging
+    input_time = 30*1000; // 30s time to respond to simon
+
+    /* configure the input devices in order 0 to max */
+    Serial.println(len);
+    
+    for(int i =0; i < len; i++){
+      int pin = ins[i];
+      Serial.println("here");
+      m_ins.push_back( new Button((uint8_t)pin));
+    }
   }
 
   void test(){
@@ -35,18 +53,15 @@ public:
   }
 
   void setup(){
-    /* configure the input devices in order 0 to max */
-    m_ins.push_back( new Button((uint8_t)2));
-    m_ins.push_back( new Button((uint8_t)4));
-    m_ins.push_back( new Button((uint8_t)7));
+
 
     // add two buttons as input devices
     test();
   }
 
   int read_que(int* read_seq, int que, long double ellapsed_time){
-    bool read;
-    while(ellapsed_time <= input_time){
+    bool read = false;
+    if(ellapsed_time <= input_time){
       // do the reading in the permitted window
       int pos = 0;
       for(IInput* in : m_ins){

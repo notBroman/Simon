@@ -14,10 +14,26 @@ class OutputHandler{
   
 
 public:
-  OutputHandler(){
+  OutputHandler(int one, int two, int three){
+    // initialize the serial line for debugging
+    //Serial.begin(9600);
+
+    /* configure the outputs */
+    m_outs[0] = new Led((uint8_t)one, false);
+    m_outs[1] = new Led((uint8_t)two, false);
+    m_outs[2] = new Led((uint8_t)three, false);
+  }
+
+  OutputHandler(int* outs, int len){
     // initialize the serial line for debugging
     Serial.begin(9600);
 
+    /* configure the outputs */
+    for(int i = 0; i < len; i++){
+      Serial.println(i);
+      int pin = outs[i];
+      m_outs[i] = new Led((uint8_t)pin, false);
+    }
   }
 
   void test(){
@@ -31,10 +47,7 @@ public:
   }
 
   void setup(){
-    /* configure the outputs */
-    m_outs[0] = new Led((uint8_t)3, false);
-    m_outs[1] = new Led((uint8_t)5, false);
-    m_outs[2] = new Led((uint8_t)6, false);
+
 
     /* test if the outputs are set correctly */
     test();
