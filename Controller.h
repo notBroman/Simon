@@ -30,9 +30,9 @@ class Controller{
 public:
   Controller(int* ins, int l1, int* outs, int l2){
     Serial.begin(9600);
-    round = 1;
-    score_player = 0;
-    score_computer = 0;
+    m_round = 1;
+    m_score_player = 0;
+    m_score_computer = 0;
     m_que = 0;
     m_ellapsed_time = 0;
     generate_seq();
@@ -78,6 +78,23 @@ public:
     m_ellapsed_time += (millis() - start_time);
   }
 
+  void write(){
+    long int start = millis();
+    //Serial.println(m_active_time);
+    int done = h_out->run_sequence(m_sequence, m_que, m_active_time);
+    Serial.println(done);
+
+    if( done == 1 ){
+      m_que++;
+      m_active_time = 0;
+      Serial.println(m_que == m_difficulty);
+    }
+    else{
+      // the led did not change, because it has not be on long enough
+      m_active_time += (millis() - start);
+    }
+  }
+
   void setup(){
     h_out->setup();
     h_in->setup();
@@ -96,42 +113,26 @@ public:
   void play(){
     switch(m_current_state){
       case WRITE:
-        long int start = milis()
-        int done = h_out->run_sequence(m_sequence, m_difficulty, m_que, m_active_time);
-        switch(done){
-        case -1:
-          // the led did not change, because it has not be on long enough
-          m_active_time += (millis() - start);
-          break;
-
-        case 0:
-          // the led has been switched on
-          m_active_time = 0;
-          break;
-
-        case 1:
-          // the led has been switched off
-          m_que++;
-          m_active_time = 0;
-          break; 
-        }
+        write();
+        
         if(m_que == m_difficulty){
-          m_current_state = READ;
+          Serial.println("switch");
           m_que = 0;
           m_ellapsed_time = 0;
+          m_current_state = READ;
         }
         break;
 
       case CONTROL:
         control();
-        round++;
+        m_round++;
         
         Serial.print("P:");
-        Serial.print(score_player);
+        Serial.print(m_score_player);
         Serial.print(" | Com:");
-        Serial.println(score_computer);
+        Serial.println(m_score_computer);
 
-        if(score_player >= 3 || score_computer >= 3){
+        if(m_score_player >= 3 || m_score_computer >= 3){
           m_current_state = END;
           break;
         } 
@@ -141,6 +142,7 @@ public:
 
       case READ:
         // read sequence
+        Serial.println("R");
         read();
         if (m_que == m_difficulty){ 
           m_current_state = CONTROL;

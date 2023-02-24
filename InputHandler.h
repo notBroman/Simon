@@ -12,7 +12,7 @@ public:
   InputHandler(int one, int two, int three){
     // initialize the serial line for debugging
     //Serial.begin(9600);
-    input_time = 30*1000; // 30s time to respond to simon
+    input_time = 20*1000; // 30s time to respond to simon
 
     /* configure the input devices in order 0 to max */
     m_ins.push_back( new Button((uint8_t)one));
@@ -22,11 +22,11 @@ public:
 
   InputHandler(int* ins, int len){
     // initialize the serial line for debugging
-    input_time = 30*1000; // 30s time to respond to simon
+    input_time = 20*1000; // 30s time to respond to simon
 
     /* configure the input devices in order 0 to max */
     Serial.println(len);
-    
+
     for(int i =0; i < len; i++){
       int pin = ins[i];
       Serial.println("here");

@@ -53,15 +53,18 @@ public:
     test();
   }
 
-  int run_sequence(int* sequence, int difficulty, int que, long int active_time){
-    Output* out = this->m_outs[(sequence[que])];
-    if(digitalRead(out->get_pin()) == LOW){
+  int run_sequence(int* sequence, int que, long int active_time){
+    IOutput* out = this->m_outs[(sequence[que])];
+    if(digitalRead(out->get_pin()) == LOW && active_time <= 250){
       out->write(255);
       return 0;
     }
     else if(digitalRead(out->get_pin()) == HIGH && active_time >= 250){
       out->write(0);
-      return 1;
+      return -1;
+    }
+    else if(active_time >= 500){
+      return 1    ;  
     }
     return -1;
   }

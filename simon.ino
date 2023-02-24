@@ -11,21 +11,22 @@ Controller* c2;
 
 void setup(){
     // do stuff
-    //Serial.begin(9600); // for debugging
+    Serial.begin(9600); // for debugging
     while(!Serial){}
 
     //Serial.println("hello world");
 
     c1 = new Controller(i1, 3, o1, 3);
-    c2 = new Controller(i2, 3, o2, 3);
+    //c2 = new Controller(i2, 3, o2, 3);
 
     c1->setup();
-    c2->setup();
+    //c2->setup();
 
 }
 
 void loop(){
   // do stuff
   c1->play();
-  c2->play();
+  //c2->play();
+  //delay(200);
 }
