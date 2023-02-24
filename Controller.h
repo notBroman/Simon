@@ -35,6 +35,8 @@ public:
     m_score_computer = 0;
     m_que = 0;
     m_ellapsed_time = 0;
+    m_active_time = 0;
+
     generate_seq();
     
     h_in = new InputHandler(ins, l1);
@@ -82,12 +84,10 @@ public:
     long int start = millis();
     //Serial.println(m_active_time);
     int done = h_out->run_sequence(m_sequence, m_que, m_active_time);
-    Serial.println(done);
-
+    
     if( done == 1 ){
       m_que++;
       m_active_time = 0;
-      Serial.println(m_que == m_difficulty);
     }
     else{
       // the led did not change, because it has not be on long enough
@@ -142,7 +142,7 @@ public:
 
       case READ:
         // read sequence
-        Serial.println("R");
+
         read();
         if (m_que == m_difficulty){ 
           m_current_state = CONTROL;
@@ -156,26 +156,7 @@ public:
 
 
     }
-    /*
-    if(score_player < 3 && score_computer <3){
 
-      h_out.run_sequence(sequence, m_difficulty);  
-      control();
-      round++;
-      Serial.print("P:");
-      Serial.println(score_player);
-      Serial.print("Com:");
-      Serial.println(score_computer);
-    } else{
-      (score_player > 2) ? h_out.win() : h_out.loss();
-      //h_out.loss();
-      //h_out.win();
-      while(true){
-        // do nothing
-        
-      }      
-    }
-    */
   }
 
 };

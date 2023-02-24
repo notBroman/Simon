@@ -17,16 +17,17 @@ void setup(){
     //Serial.println("hello world");
 
     c1 = new Controller(i1, 3, o1, 3);
-    //c2 = new Controller(i2, 3, o2, 3);
+    c2 = new Controller(i2, 3, o2, 3);
 
     c1->setup();
-    //c2->setup();
+    c2->setup();
 
 }
 
 void loop(){
   // do stuff
   c1->play();
-  //c2->play();
+  //delay(200);
+  c2->play();
   //delay(200);
 }

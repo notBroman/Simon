@@ -72,7 +72,7 @@ public:
   void single_out(int idx, int val){
     IOutput* device = m_outs[idx];
     device->write(val);
-    delay(125);
+    delay(50);
     device->write(0);
   }
 
@@ -85,24 +85,13 @@ public:
     for(int i = 0; i < num_devices(); ++i){
       IOutput* out = m_outs[i];
       out->write(255);
-      delay(100);
     }
-    for(int i = 0; i < num_devices(); ++i){
-      IOutput* out = m_outs[i];
-      out->write(0);
-      delay(100);
-    }
-    return false;
+    return true;
   }
 
   bool win(){
-    for(int i = 0; i < num_devices(); ++i){
-      IOutput* out = m_outs[i];
-      out->write(255);
-      delay(100);
-      out->write(0);
-
-    }
+    IOutput* out = m_outs[0];
+    out->write(255);
     return true;
   }
 };
