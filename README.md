@@ -8,4 +8,4 @@ buttons on
 ## Outputs
 
 LEDs on
-- 13 (active high)
+- 8 (active high)
